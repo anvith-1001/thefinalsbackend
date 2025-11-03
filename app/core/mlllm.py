@@ -4,18 +4,32 @@ import pandas as pd
 import numpy as np
 from openai import OpenAI
 import warnings
+import requests
 
 
 warnings.filterwarnings("ignore", message="Trying to unpickle estimator LogisticRegression")
 
-MODEL_PATH = os.getenv("MODEL_PATH", "./core/model.pkl")
+MODEL_PATH = os.getenv("MODEL_PATH")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 def load_model():
-    if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError("Model file not found")
-    return joblib.load(MODEL_PATH)
+    if MODEL_PATH.startswith("http"):
+        print(f"[INFO] Downloading model from {MODEL_PATH} ...")
+        response = requests.get(MODEL_PATH)
+        if response.status_code == 200:
+            from io import BytesIO
+            model_bytes = BytesIO(response.content)
+            model = joblib.load(model_bytes)
+            print("[INFO] Model loaded successfully from URL.")
+            return model
+        else:
+            raise FileNotFoundError(f"Failed to download model. HTTP {response.status_code}")
+    else:
+        if not os.path.exists(MODEL_PATH):
+            raise FileNotFoundError("Model file not found")
+        print(f"[INFO] Loading model from local path: {MODEL_PATH}")
+        return joblib.load(MODEL_PATH)
 
 model = load_model()
 
