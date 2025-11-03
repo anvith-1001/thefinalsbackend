@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+python-jose
+firebase-admin
+twilio
+pymongo[srv]
+bcrypt
+python-multipart
+python-docx
+motor
+passlib
+scikit-learn
+numpy
+joblib
+pandas
+openai
