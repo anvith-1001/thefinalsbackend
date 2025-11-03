@@ -5,11 +5,11 @@ python-jose
 firebase-admin
 twilio
 pymongo[srv]
-bcrypt
+bcrypt==4.0.1
 python-multipart
 python-docx
 motor
-passlib
+passlib==1.7.4
 scikit-learn
 numpy
 joblib
