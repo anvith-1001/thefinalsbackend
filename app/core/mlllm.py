@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore", message="Trying to unpickle estimator Logistic
 MODEL_PATH = os.getenv("MODEL_PATH", "./core/model.pkl")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
-MODEL_URL = "https://raw.githubusercontent.com/anvith-1001/thefinalsbackend/main/model.pkl"
+MODEL_URL = "https://github.com/anvith-1001/thefinalsbackend/raw/refs/heads/main/model.pkl"
 
 def load_model():
     if not os.path.exists(MODEL_PATH):
