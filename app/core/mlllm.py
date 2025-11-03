@@ -2,7 +2,6 @@ import os
 import joblib
 import pandas as pd
 import numpy as np
-import requests
 from openai import OpenAI
 import warnings
 
@@ -12,21 +11,11 @@ warnings.filterwarnings("ignore", message="Trying to unpickle estimator Logistic
 MODEL_PATH = os.getenv("MODEL_PATH", "./core/model.pkl")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
-MODEL_URL = "https://github.com/anvith-1001/thefinalsbackend/raw/refs/heads/main/model.pkl"
 
 def load_model():
     if not os.path.exists(MODEL_PATH):
-        print(f"[INFO] Model not found at {MODEL_PATH}, attempting to download from GitHub...")
-        os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-        resp = requests.get(MODEL_URL)
-        if resp.status_code == 200:
-            with open(MODEL_PATH, "wb") as f:
-                f.write(resp.content)
-            print("[INFO] Model downloaded successfully.")
-        else:
-            raise FileNotFoundError(f"Model file not found and failed to download (HTTP {resp.status_code})")
+        raise FileNotFoundError("Model file not found")
     return joblib.load(MODEL_PATH)
-
 
 model = load_model()
 
