@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from app.routes.user import router as user_router
@@ -9,7 +9,6 @@ load_dotenv()
 
 app = FastAPI()
 
-# CORS setup
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,12 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Routers
 app.include_router(user_router)
 app.include_router(predict_router)
+
 
 @app.api_route("/health", methods=["GET", "HEAD"])
 def health_check(request: Request):
     if request.method == "HEAD":
-        return {}  # No body needed for HEAD
+        return {}
     return {"status": "ok", "timestamp": time.time()}
