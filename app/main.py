@@ -20,9 +20,3 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(predict_router)
 
-
-@app.api_route("/health", methods=["GET", "HEAD"])
-def health_check(request: Request):
-    if request.method == "HEAD":
-        return {}
-    return {"status": "ok", "timestamp": time.time()}
